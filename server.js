@@ -28,13 +28,13 @@ app.get('/contact', (req, res) => {
 	res.render('contact');
 });
 app.post('/contact/send-message', (req, res) => {
-  const { author, sender, title, message, image } = req.body;
-	if(author && sender && title && message && image) {
-		res.render('contact', { isSent: true, filename: req.body.image });
-	}
-	else {
-		res.render('contact', { isError: true });
-	}
+ const { author, sender, title, message, file } = req.body;
+ if(author && sender && title && message && file) {
+    res.render('contact', { isSent: true, file: file });
+  }
+  else {
+    res.render('contact', { isError: true });
+  }
 });
 app.use('/user', (req, res, next) => {
 	res.render('forbidden');
