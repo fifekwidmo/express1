@@ -5,13 +5,9 @@ const app = express();
 
 app.engine('hbs', hbs());
 app.set('view engine', 'hbs');
-// app.use((req, res, next) => {
-//   res.show = (name) => {
-//     res.sendFile(path.join(__dirname, `/views/${name}`));
-//   };
-//   next();
-// });
 app.use(express.static(path.join(__dirname, '/public')));
+app.use(express.urlencoded({ extended: false }));
+// app.use(express.json());
 
 app.get('/', (req, res) => {
   res.render('index');
@@ -30,6 +26,15 @@ app.get('/info', (req, res) => {
 });
 app.get('/contact', (req, res) => {
 	res.render('contact');
+});
+app.post('/contact/send-message', (req, res) => {
+  const { author, sender, title, message, image } = req.body;
+	if(author && sender && title && message && image) {
+		res.render('contact', { isSent: true, filename: req.body.image });
+	}
+	else {
+		res.render('contact', { isError: true });
+	}
 });
 app.use('/user', (req, res, next) => {
 	res.render('forbidden');
